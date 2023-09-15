@@ -4,10 +4,10 @@ import { Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer } from 're
 import "leaflet/dist/leaflet.css";
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css';
 import 'leaflet-defaulticon-compatibility';
-import L from "leaflet";
+import MapRouting from './map-routing';
 
-
-const MapComponent = ({ markerOne, markerTwo }) => {
+const MapComponent = ({ markerOne, markerTwo, distanceData }) => {
+  console.log(distanceData);
   let position;
   let position2;
   if (markerOne) {
@@ -15,25 +15,6 @@ const MapComponent = ({ markerOne, markerTwo }) => {
   }
   if (markerTwo) {
     position2 = markerTwo
-  }
-  if (markerOne.length && markerTwo.length) {
-    createMarker(markerOne, markerTwo)
-  }
-
-  function createMarker(markerOne, markerTwo) {
-    var markerFrom = L.circleMarker(markerOne, { color: "#F00", radius: 10 });
-    var markerTo = L.circleMarker(markerTwo, { color: "#4AFF00", radius: 10 });
-    var from = markerFrom.getLatLng();
-    var to = markerTo.getLatLng();
-    markerFrom.bindPopup('Delhi ' + (from).toString());
-    markerTo.bindPopup('Mumbai ' + (to).toString());
-    // map.addLayer(markerTo);
-    // map.addLayer(markerFrom);
-    getDistance(from, to);
-  }
-
-  function getDistance(from, to) {
-    alert((from.distanceTo(to)).toFixed(0) / 1000) + ' km';
   }
 
   return (
@@ -44,19 +25,14 @@ const MapComponent = ({ markerOne, markerTwo }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {
-          markerOne.length && (
-            <Marker position={position} zoom={5}>
-              <Popup>
-              </Popup>
-            </Marker>
-          )
+          markerOne.length && (<Marker position={position} zoom={5}></Marker>)
         }
         {
-          markerTwo.length && (
-            <Marker position={position2}>
-              <Popup>
-              </Popup>
-            </Marker>
+          markerTwo.length && ( <Marker position={position2}></Marker>)
+        }
+        {
+          markerOne.length && markerTwo.length && (
+            <MapRouting position1={position} position2={position2} zoom={10}/>
           )
         }
         <Circle center={[20.5937, 78.9629]} radius={1450000} />

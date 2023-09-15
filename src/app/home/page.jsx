@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import CardComponent from '../components/card/card';
 import dynamic from 'next/dynamic';
 import LeafletAutoComplete from '../leafletAPI/leaflet-autocomplete';
-import { useRouter } from "next/navigation";
+import { Stack, Text } from '@chakra-ui/react';
 
 const Map = dynamic(() => import("../components/map-box/map"), { ssr: false });
 const TextBox = dynamic(() => import("../components/input/input.jsx"), { ssr: false });
@@ -16,36 +16,41 @@ const Home = () => {
   const [item, setItem] = useState([]);
   const [inputOne, setInputOne] = useState({});
   const [inputTwo, setInputTwo] = useState({});
-  const router = useRouter();
+  const [timer, setTimer] = useState(null);
 
   const getSelectedValOne = (value) => {
-    console.log(value);
     const filterOne = data.filter((item) => item.label === value);
     setInputOne(prevVal => [filterOne[0].y, filterOne[0].x]);
   };
 
   const getSelectedValtwo = (value) => {
-    console.log(value);
     const filtertwo = data.filter((item) => item.label === value);
     setInputTwo(prevVal => [filtertwo[0].y, filtertwo[0].x]);
   };
 
   const getChanges = async (value) => {
-    data = await LeafletAutoComplete(value);
-    const responseData = data.map((items) => items.label);
-    setItem(prevVal => responseData);
+
+    clearTimeout(timer)
+
+    const newTimer = setTimeout(async () => {
+      data = await LeafletAutoComplete(value);
+      const responseData = data.map((items) => items.label);
+      setItem(prevVal => responseData);
+    }, 500)
+
+    setTimer(newTimer)
   };
 
   const resetData = () => {
-   window.location.reload();
+    setInputOne({});
+    setInputTwo({});
+    setItem([]);
   }
 
   return (
-    <div className="md:flex h-[85vh]">
+    <div className="md:flex min-h">
       <div className="md:basis-2/5">
         <CardComponent heading="Taxi Booking" textAlign="center">
-          {/* <TextBox placeholder="Where From ?" />
-          <TextBox placeholder="Where To ?" /> */}
 
           <TextBox
             label="Enter Where From Address : "
@@ -53,6 +58,7 @@ const Home = () => {
             data={item}
             onSelected={getSelectedValOne}
             onChange={getChanges}
+            value={inputOne}
           />
 
           <TextBox
@@ -61,8 +67,17 @@ const Home = () => {
             data={item}
             onSelected={getSelectedValtwo}
             onChange={getChanges}
+            value={inputTwo}
           />
-          <Button handleChange={resetData}/>
+          <div className='flex justify-center'>
+            <Button color="red" name="Reset" handleChange={resetData} />
+            <Button color="blue" name="Book" />
+          </div>
+          <Stack spacing={3}>
+            <Text mt={5} fontSize='md'fontWeight={'700'} textAlign={'center'} >
+              [Note: For Autocomplete address press <span className="font-bold text-red-500">Down Key(↓)</span> after entering the address]
+            </Text>
+          </Stack>
         </CardComponent>
         <CardComponent heading="Select CAB" textAlign="center">
 

@@ -2,11 +2,11 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
 
-const ButtonComponent = ({handleChange}) => {
+const ButtonComponent = ({handleChange, color, name}) => {
   return (
-    <div>
-      <Button colorScheme='blue' margin={'0 auto'} mt={5} display={'block'} onClick={handleChange}>Book</Button>
-    </div>
+    <>
+      <Button colorScheme={color} mt={5} mx={2} display={'inline'} onClick={handleChange}>{name}</Button>
+    </>
   )
 }
 

@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
+    console.log(data);
     const [suggestions, setSugesstions] = useState([]);
     const [isHideSuggs, setIsHideSuggs] = useState(false);
     const [selectedVal, setSelectedVal] = useState("");
@@ -22,6 +23,10 @@ const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
         setSelectedVal(value);
         setIsHideSuggs(true);
     };
+
+    useEffect(() => {
+
+    }, [suggestions]);
 
     return (
         <div>

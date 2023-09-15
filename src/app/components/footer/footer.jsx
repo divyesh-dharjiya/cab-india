@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <Box
       color={useColorModeValue('gray.700', 'gray.200')}
-      className="bg-white-900 sticky bottom-0">
+      className="bg-white-900">
       <Box py={0}>
         <Flex
           align={'center'}
