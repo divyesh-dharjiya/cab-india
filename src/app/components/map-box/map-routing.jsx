@@ -16,10 +16,10 @@ const MapRouting = ({position1, position2, onMarkerSelected}, ...props) => {
       routingControl = L.Routing.control({
         waypoints: [L.latLng(position1[0], position1[1]), L.latLng(position2[0], position2[1])],
         routeWhileDragging: true
-      }).addTo(map);
+      }).addTo(map).on('routesfound', function(e) {
+        onMarkerSelected(e.routes[0].summary);
+      });
 
-      onMarkerSelected(routingControl);
-      
       return () => map.removeControl(routingControl);
     }, [map]);
   

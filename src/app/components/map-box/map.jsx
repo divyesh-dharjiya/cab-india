@@ -7,7 +7,6 @@ import 'leaflet-defaulticon-compatibility';
 import MapRouting from './map-routing';
 
 const MapComponent = ({ markerOne, markerTwo, distanceData, onMarkerSelected }) => {
-  console.log(distanceData);
   let position;
   let position2;
   if (markerOne) {

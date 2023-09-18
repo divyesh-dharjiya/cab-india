@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 
 const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
-    console.log(data);
     const [suggestions, setSugesstions] = useState([]);
     const [isHideSuggs, setIsHideSuggs] = useState(false);
     const [selectedVal, setSelectedVal] = useState("");
@@ -55,7 +54,7 @@ const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
                             onClick={() => {
                                 hideSuggs(item);
                             }}
-                            className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-cyan-300 hover:text-black-500"
+                            className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-blue-500 hover:text-white"
                         >
                             {item}
                         </div>
