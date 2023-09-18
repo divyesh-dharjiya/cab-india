@@ -8,7 +8,7 @@ L.Marker.prototype.options.icon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png"
 });
 
-const MapRouting = ({position1, position2}, props) => {
+const MapRouting = ({position1, position2, onMarkerSelected}, ...props) => {
     const map = useMap();
     let routingControl;
     useEffect(() => {
@@ -17,6 +17,8 @@ const MapRouting = ({position1, position2}, props) => {
         waypoints: [L.latLng(position1[0], position1[1]), L.latLng(position2[0], position2[1])],
         routeWhileDragging: true
       }).addTo(map);
+
+      onMarkerSelected(routingControl);
       
       return () => map.removeControl(routingControl);
     }, [map]);

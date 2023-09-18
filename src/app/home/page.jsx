@@ -85,7 +85,9 @@ const Home = () => {
       </div>
       <div className='md:basis-3/5'>
         <CardComponent heading="Map" textAlign="left">
-          <Map markerOne={inputOne} markerTwo={inputTwo} />
+          <Map markerOne={inputOne} markerTwo={inputTwo} onMarkerSelected = {(control) => {
+            console.log(`onMarkerSelected ---- `, control);
+          }} />
         </CardComponent>
       </div>
     </div>

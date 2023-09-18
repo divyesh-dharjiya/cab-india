@@ -6,7 +6,7 @@ import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import 'leaflet-defaulticon-compatibility';
 import MapRouting from './map-routing';
 
-const MapComponent = ({ markerOne, markerTwo, distanceData }) => {
+const MapComponent = ({ markerOne, markerTwo, distanceData, onMarkerSelected }) => {
   console.log(distanceData);
   let position;
   let position2;
@@ -32,7 +32,7 @@ const MapComponent = ({ markerOne, markerTwo, distanceData }) => {
         }
         {
           markerOne.length && markerTwo.length && (
-            <MapRouting position1={position} position2={position2} zoom={10}/>
+            <MapRouting onMarkerSelected={onMarkerSelected} position1={position} position2={position2} zoom={10}/>
           )
         }
         <Circle center={[20.5937, 78.9629]} radius={1450000} />
