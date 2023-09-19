@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CardComponent from '../components/card/card';
 import dynamic from 'next/dynamic';
 import LeafletAutoComplete from '../leafletAPI/leaflet-autocomplete';
 import { Stack, Text } from '@chakra-ui/react';
 import convertIntoTime from '../leafletAPI/convertIntoTime';
+import CarList from '../components/carList/carList';
 
 const Map = dynamic(() => import("../components/map-box/map"), { ssr: false });
 const TextBox = dynamic(() => import("../components/input/input.jsx"), { ssr: false });
@@ -21,12 +22,14 @@ const Home = () => {
   const [routeDetail, setRouteDetail] = useState({});
 
   const getSelectedValOne = (value) => {
-    const filterOne = data.filter((item) => item.label === value);
+    const storeData = data;
+    const filterOne = storeData.filter((item) => item.label === value);
     setInputOne(prevVal => [filterOne[0].y, filterOne[0].x]);
   };
 
   const getSelectedValtwo = (value) => {
-    const filtertwo = data.filter((item) => item.label === value);
+    const storeData = data;
+    const filtertwo = storeData.filter((item) => item.label === value);
     setInputTwo(prevVal => [filtertwo[0].y, filtertwo[0].x]);
   };
 
@@ -43,11 +46,9 @@ const Home = () => {
     setTimer(newTimer)
   };
 
-  const resetData = () => {
-    setInputOne({});
-    setInputTwo({});
-    setItem([]);
-  }
+  useEffect(() => {
+
+  }, [inputOne, inputTwo]);
 
   return (
     <div className="md:flex min-h">
@@ -60,7 +61,7 @@ const Home = () => {
             data={item}
             onSelected={getSelectedValOne}
             onChange={getChanges}
-            value={inputOne}
+            // value={inputOne}
           />
 
           <TextBox
@@ -69,12 +70,12 @@ const Home = () => {
             data={item}
             onSelected={getSelectedValtwo}
             onChange={getChanges}
-            value={inputTwo}
+            // value={inputTwo}
           />
-          <div className='flex justify-center'>
+          {/* <div className='flex justify-center'>
             <Button color="red" name="Reset" handleChange={resetData} />
             <Button color="blue" name="Book" />
-          </div>
+          </div> */}
           <Stack spacing={3}>
             <Text mt={5} fontSize='md' fontWeight={'700'} textAlign={'center'} >
               [Note: For Autocomplete address press <span className="font-bold text-red-500">Down Key(↓)</span> after entering the address]
@@ -85,14 +86,19 @@ const Home = () => {
         {
           routeDetail.totalDistance && routeDetail.totalTime &&
           (
+            <>
             <CardComponent heading="Select CAB" textAlign="center" p={0}>
               <Text mt={1} fontSize='md' fontWeight={'700'} textAlign={'center'} >
                 Total Distance : <span className='text-red-400 font-bold'>{(routeDetail.totalDistance / 1000).toFixed(2)} Kilometers</span>
 
-              </Text><Text mt={1} fontSize='md' fontWeight={'700'} textAlign={'center'} >
+              </Text><Text mt={1} mb={3} fontSize='md' fontWeight={'700'} textAlign={'center'} >
                 Total Time : <span className='text-red-400 font-bold'>{convertIntoTime(routeDetail.totalTime)}</span>
               </Text>
+              <div>
+              </div>
+            <CarList totalKm={(routeDetail.totalDistance / 1000).toFixed(2)}/>
             </CardComponent>
+            </>
           )
         }
 
