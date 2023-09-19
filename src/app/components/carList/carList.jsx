@@ -17,7 +17,7 @@ const CarList = ({totalKm}) => {
             {
                 carData.map((item) => {
                     return (
-                        <div className='lg:inline-flex lg:flex-col lg:w-1/2 xl:w-1/3 lg:justify-center md:inline-flex md:justify-center text-center'>
+                        <div key={item.id} className='lg:inline-flex lg:flex-col lg:w-1/2 xl:w-1/3 lg:justify-center md:inline-flex md:justify-center text-center'>
                             <CardComponent className="lg:m-auto" margin={0}>
                                 <Stack m='0' spacing='3'>
                                     <Image className='md: m-auto' src={item.imageUrl} height={150} width={150} alt={item.carType}/>
