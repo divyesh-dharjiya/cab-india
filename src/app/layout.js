@@ -10,10 +10,10 @@ import Chakra from './components/chakra';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'CAB India',
-  description: 'Indian CAB Facility.',
-}
+// export const metadata = {
+//   title: 'CAB India',
+//   description: 'Indian CAB Facility.',
+// }
 
 export default function RootLayout({ children }) {
   const pathName = usePathname();
