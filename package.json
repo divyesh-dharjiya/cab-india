@@ -21,7 +21,6 @@
     "framer-motion": "^10.16.4",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
-    "leaflet-geosearch": "^3.8.0",
     "leaflet-routing-machine": "^3.2.12",
     "next": "13.4.19",
     "postcss": "8.4.29",

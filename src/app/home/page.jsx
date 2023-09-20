@@ -13,12 +13,15 @@ const TextBox = dynamic(() => import("../components/input/input.jsx"), { ssr: fa
 
 
 let data = [];
+let data1 = [];
 
 const Home = () => {
   const [item, setItem] = useState([]);
+  const [itemTwo, setItemTwo] = useState([]);
   const [inputOne, setInputOne] = useState({});
   const [inputTwo, setInputTwo] = useState({});
   const [timer, setTimer] = useState(null);
+  const [timerTwo, setTimerTwo] = useState(null);
   const [routeDetail, setRouteDetail] = useState({});
 
   const getSelectedValOne = (value) => {
@@ -28,7 +31,7 @@ const Home = () => {
   };
 
   const getSelectedValtwo = (value) => {
-    const storeData = data;
+    const storeData = data1;
     const filtertwo = storeData.filter((item) => item.display_name === value);
     setInputTwo(prevVal => [filtertwo[0].lat, filtertwo[0].lon]);
   };
@@ -39,12 +42,23 @@ const Home = () => {
 
     const newTimer = setTimeout(async () => {
       data = await LeafletAutoComplete(value);
-      console.log(data);
-      const responseData = data.map((items) => items.display_name);
-      setItem(prevVal => responseData);
+      setItem(prevVal => data.map((items) => items.display_name));
     }, 500)
 
     setTimer(newTimer)
+  };
+
+
+  const getChangesTwo = async (value) => {
+
+    clearTimeout(timerTwo)
+
+    const newTimer = setTimeout(async () => {
+      data1 = await LeafletAutoComplete(value);
+      setItemTwo(prevVal => data1.map((items) => items.display_name));
+    }, 500)
+
+    setTimerTwo(newTimer)
   };
 
   useEffect(() => {
@@ -68,9 +82,9 @@ const Home = () => {
           <TextBox
             label="Enter Where To Address : "
             pholder="Where To ?"
-            data={item}
+            data1={itemTwo}
             onSelected={getSelectedValtwo}
-            onChange={getChanges}
+            onChange={getChangesTwo}
           // value={inputTwo}
           />
           {/* <div className='flex justify-center'>
@@ -79,7 +93,7 @@ const Home = () => {
           </div> */}
           <Stack spacing={3}>
             <Text mt={5} fontSize='md' fontWeight={'700'} textAlign={'center'} >
-              [Note: For Autocomplete address press <span className="font-bold text-red-500">Down Key(↓)</span> after entering the address]
+              [Note: <span className="font-bold text-red-500">Type address only india location*</span>]
             </Text>
           </Stack>
         </CardComponent>
@@ -107,7 +121,6 @@ const Home = () => {
       <div className='md:basis-3/5'>
         <CardComponent heading="Map" textAlign="left">
           <Map markerOne={inputOne} markerTwo={inputTwo} onMarkerSelected={(control) => {
-            console.log(`onMarkerSelected ---- `, control);
             setRouteDetail((prev) => control)
           }} />
         </CardComponent>

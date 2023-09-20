@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 
-const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
+const InputComponent = ({ label, pholder, data, data1, onSelected, onChange }) => {
     const [suggestions, setSugesstions] = useState([]);
+    const [suggestionsTwo, setSugesstionsTwo] = useState([]);
     const [isHideSuggs, setIsHideSuggs] = useState(false);
     const [selectedVal, setSelectedVal] = useState("");
-
     const handler = e => {
         setSugesstions(data);
     };
@@ -24,8 +24,9 @@ const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
     };
 
     useEffect(() => {
-
-    }, [suggestions]);
+        setSugesstions(data);
+        setSugesstionsTwo(data1)
+    }, [suggestions, data, data1]);
 
     return (
         <div>
@@ -39,7 +40,7 @@ const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
                         type="search"
                         value={selectedVal}
                         onChange={handleChange}
-                        onKeyUp={handler}
+                        // onKeyUp={handler}
                         className="bg-gray-50 border z-50 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                     />
                 </div>
@@ -48,7 +49,19 @@ const InputComponent = ({ label, pholder, data, onSelected, onChange }) => {
                     className="suggestions"
                     style={{ display: isHideSuggs ? "none" : "block" }}
                 >
-                    {suggestions.map((item, idx) => (
+                    {data && suggestions.map((item, idx) => (
+                        <div
+                            key={"" + item + idx}
+                            onClick={() => {
+                                hideSuggs(item);
+                            }}
+                            className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:bg-blue-500 hover:text-white"
+                        >
+                            {item}
+                        </div>
+                    ))}
+
+                    {data1 && suggestionsTwo.map((item, idx) => (
                         <div
                             key={"" + item + idx}
                             onClick={() => {

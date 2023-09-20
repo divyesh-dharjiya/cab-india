@@ -27,7 +27,7 @@ const MapComponent = ({ markerOne, markerTwo, onMarkerSelected }) => {
           markerOne.length && (<Marker position={position} zoom={5}></Marker>)
         }
         {
-          markerTwo.length && (<Marker position={position2}></Marker>)
+          markerTwo.length && (<Marker position={position2} zoom={5}></Marker>)
         }
         {
           markerOne.length && markerTwo.length && (
