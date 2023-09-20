@@ -9,7 +9,7 @@ import CarList from '../components/carList/carList';
 
 const Map = dynamic(() => import("../components/map-box/map"), { ssr: false });
 const TextBox = dynamic(() => import("../components/input/input.jsx"), { ssr: false });
-const Button = dynamic(() => import("../components/button/button.jsx"), { ssr: false });
+// const Button = dynamic(() => import("../components/button/button.jsx"), { ssr: false });
 
 
 let data = [];
@@ -23,14 +23,14 @@ const Home = () => {
 
   const getSelectedValOne = (value) => {
     const storeData = data;
-    const filterOne = storeData.filter((item) => item.label === value);
-    setInputOne(prevVal => [filterOne[0].y, filterOne[0].x]);
+    const filterOne = storeData.filter((item) => item.display_name === value);
+    setInputOne(prevVal => [filterOne[0].lat, filterOne[0].lon]);
   };
 
   const getSelectedValtwo = (value) => {
     const storeData = data;
-    const filtertwo = storeData.filter((item) => item.label === value);
-    setInputTwo(prevVal => [filtertwo[0].y, filtertwo[0].x]);
+    const filtertwo = storeData.filter((item) => item.display_name === value);
+    setInputTwo(prevVal => [filtertwo[0].lat, filtertwo[0].lon]);
   };
 
   const getChanges = async (value) => {
@@ -39,7 +39,8 @@ const Home = () => {
 
     const newTimer = setTimeout(async () => {
       data = await LeafletAutoComplete(value);
-      const responseData = data.map((items) => items.label);
+      console.log(data);
+      const responseData = data.map((items) => items.display_name);
       setItem(prevVal => responseData);
     }, 500)
 
@@ -61,7 +62,7 @@ const Home = () => {
             data={item}
             onSelected={getSelectedValOne}
             onChange={getChanges}
-            // value={inputOne}
+          // value={inputOne}
           />
 
           <TextBox
@@ -70,7 +71,7 @@ const Home = () => {
             data={item}
             onSelected={getSelectedValtwo}
             onChange={getChanges}
-            // value={inputTwo}
+          // value={inputTwo}
           />
           {/* <div className='flex justify-center'>
             <Button color="red" name="Reset" handleChange={resetData} />
@@ -87,17 +88,17 @@ const Home = () => {
           routeDetail.totalDistance && routeDetail.totalTime &&
           (
             <>
-            <CardComponent heading="Select CAB" textAlign="center" p={0}>
-              <Text mt={1} fontSize='md' fontWeight={'700'} textAlign={'center'} >
-                Total Distance : <span className='text-red-400 font-bold'>{(routeDetail.totalDistance / 1000).toFixed(2)} Kilometers</span>
+              <CardComponent heading="Select CAB" textAlign="center" p={0}>
+                <Text mt={1} fontSize='md' fontWeight={'700'} textAlign={'center'} >
+                  Total Distance : <span className='text-red-400 font-bold'>{(routeDetail.totalDistance / 1000).toFixed(2)} Kilometers</span>
 
-              </Text><Text mt={1} mb={3} fontSize='md' fontWeight={'700'} textAlign={'center'} >
-                Total Time : <span className='text-red-400 font-bold'>{convertIntoTime(routeDetail.totalTime)}</span>
-              </Text>
-              <div>
-              </div>
-            <CarList totalKm={(routeDetail.totalDistance / 1000).toFixed(2)}/>
-            </CardComponent>
+                </Text><Text mt={1} mb={3} fontSize='md' fontWeight={'700'} textAlign={'center'} >
+                  Total Time : <span className='text-red-400 font-bold'>{convertIntoTime(routeDetail.totalTime)}</span>
+                </Text>
+                <div>
+                </div>
+                <CarList totalKm={(routeDetail.totalDistance / 1000).toFixed(2)} />
+              </CardComponent>
             </>
           )
         }

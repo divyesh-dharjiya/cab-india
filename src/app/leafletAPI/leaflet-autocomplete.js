@@ -1,9 +1,7 @@
-"use client";
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
-const provider = new OpenStreetMapProvider();
 
 const LeafletAutoComplete = async (inputOne) => {
-        const results = await provider.search({ query: inputOne });
+        const results = await fetch(`https://nominatim.openstreetmap.org/search?q=${inputOne}&format=json`).then((response) => response.json());
+        // console.log(results);
         return results;
 }
 

@@ -24,51 +24,51 @@ const SplashScreen = ({ finishLoading }) => {
         delay: 0,
         scale: 1.5,
         duration: 350,
-        easing:'easeInOutExpo'
+        easing: 'easeInOutExpo'
       }).add({
         targets: "#logo",
         delay: 0,
         scale: 1.75,
         duration: 350,
-        easing:'easeInOutExpo',
+        easing: 'easeInOutExpo',
       }).add({
         targets: "#logo",
         delay: 0,
         scale: 2,
         duration: 350,
-        easing:'easeInOutExpo'
+        easing: 'easeInOutExpo'
       }).add({
         targets: "#logo",
         delay: 0,
         scale: 2.25,
         duration: 350,
-        easing:'easeInOutExpo',
+        easing: 'easeInOutExpo',
         rotate: 360
       }).add({
         targets: "#logo",
         delay: 0,
         scale: 2,
         duration: 350,
-        easing:'easeInOutExpo'
+        easing: 'easeInOutExpo'
       }).add({
         targets: "#logo",
         delay: 0,
         scale: 1.75,
         duration: 350,
-        easing:'easeInOutExpo'
+        easing: 'easeInOutExpo'
       }).add({
         targets: "#logo",
         delay: 0,
         scale: 1.5,
         duration: 350,
-        easing:'easeInOutExpo'
+        easing: 'easeInOutExpo'
       })
   };
 
   return (
     <div className="flex flex-col h-screen items-center justify-center">
       <div>
-      <Image id="logo" height={125} width={135} alt="demo" src={Logo} />
+        <Image id="logo" height={125} width={135} alt="demo" src={Logo} />
       </div>
       <p className="text-xl font-bold mt-12">Cab India</p>
     </div>

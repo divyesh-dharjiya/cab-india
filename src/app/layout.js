@@ -17,7 +17,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({ children }) {
   const pathName = usePathname();
-  const isHome = pathName === "/home";
+  const isHome = pathName === "/";
   const [isLoading, setIsLoading] = useState(isHome);
 
   useEffect(() => {
