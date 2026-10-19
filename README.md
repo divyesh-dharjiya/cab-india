@@ -2,10 +2,11 @@
 
 A cab booking demo for India built with Next.js 16 (App Router), React 19, Chakra UI 3 and Leaflet.
 
-- Search pickup and drop locations across India (OpenStreetMap Nominatim, India-only results)
+- Full-screen map with a floating booking panel (bottom sheet on mobile)
+- Search pickup and drop locations across India (OpenStreetMap Nominatim, India-only results), or pick a popular route
 - Use your current location as pickup, swap or clear locations
 - Real driving route, distance and travel time (OSRM) drawn on the map
-- Fare estimates for Micro, Hatchback, Sedan, SUV and MPV, with a booking confirmation
+- Fare estimates for Micro, Hatchback, Sedan, SUV and MPV, with arrival time and an itemised fare breakdown
 - Responsive layout for desktop and mobile
 
 ## Getting started

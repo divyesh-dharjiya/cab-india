@@ -1,12 +1,12 @@
 "use client";
 import { useEffect } from "react";
 import L from "leaflet";
-import { MapContainer, Marker, Polyline, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Polyline, Popup, TileLayer, ZoomControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { DROP_COLOR, PICKUP_COLOR } from "../../lib/markers";
 
-const INDIA_CENTER = [22.5, 79];
-const INDIA_ZOOM = 5;
+const INDIA_BOUNDS = [[8, 68.5], [35.5, 97]];
+const EDGE_PADDING = 48;
 
 const pinIcon = (color, text) =>
   L.divIcon({
@@ -20,39 +20,39 @@ const pinIcon = (color, text) =>
 const pickupIcon = pinIcon(PICKUP_COLOR, "A");
 const dropIcon = pinIcon(DROP_COLOR, "B");
 
-// Keeps the viewport in sync with whatever is selected.
-const ViewController = ({ from, to, path }) => {
+// Keeps the viewport on whatever is selected, leaving `insetLeft` pixels free for the panel.
+const ViewController = ({ from, to, path, insetLeft }) => {
   const map = useMap();
 
   useEffect(() => {
-    if (path?.length) {
-      map.fitBounds(L.latLngBounds(path), { padding: [40, 40] });
-    } else if (from && to) {
-      map.fitBounds(L.latLngBounds([from.position, to.position]), { padding: [60, 60] });
-    } else if (from || to) {
-      map.flyTo((from || to).position, 13, { duration: 0.8 });
-    } else {
-      map.setView(INDIA_CENTER, INDIA_ZOOM);
-    }
-  }, [map, from, to, path]);
+    const points = path?.length ? path : [from, to].filter(Boolean).map((place) => place.position);
+    const bounds = points.length ? L.latLngBounds(points) : L.latLngBounds(INDIA_BOUNDS);
+    map.fitBounds(bounds, {
+      paddingTopLeft: [insetLeft + EDGE_PADDING, EDGE_PADDING],
+      paddingBottomRight: [EDGE_PADDING, EDGE_PADDING],
+      maxZoom: points.length ? 14 : 5,
+      animate: true,
+    });
+  }, [map, from, to, path, insetLeft]);
 
   return null;
 };
 
-const MapComponent = ({ from, to, route }) => (
+const MapComponent = ({ from, to, route, insetLeft = 0 }) => (
   <MapContainer
-    center={INDIA_CENTER}
-    zoom={INDIA_ZOOM}
-    scrollWheelZoom
+    bounds={INDIA_BOUNDS}
+    zoomControl={false}
+    scrollWheelZoom={false}
     style={{ height: "100%", width: "100%" }}
   >
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
+    <ZoomControl position="topright" />
     {route && (
       <>
-        <Polyline positions={route.path} pathOptions={{ color: "#1F2937", weight: 8, opacity: 0.25 }} />
+        <Polyline positions={route.path} pathOptions={{ color: "#0B0F19", weight: 9, opacity: 0.2 }} />
         <Polyline positions={route.path} pathOptions={{ color: "#2563EB", weight: 5 }} />
       </>
     )}
@@ -66,7 +66,7 @@ const MapComponent = ({ from, to, route }) => (
         <Popup><strong>Drop</strong><br />{to.label}</Popup>
       </Marker>
     )}
-    <ViewController from={from} to={to} path={route?.path} />
+    <ViewController from={from} to={to} path={route?.path} insetLeft={insetLeft} />
   </MapContainer>
 );
 

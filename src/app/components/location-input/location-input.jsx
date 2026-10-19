@@ -129,7 +129,7 @@ const LocationInput = ({ label, placeholder, value, onSelect, markerColor, marke
 
   return (
     <Field.Root position="relative">
-      <Field.Label htmlFor={id} fontSize="sm" color="gray.600">
+      <Field.Label htmlFor={id} srOnly>
         {label}
       </Field.Label>
       <InputGroup startElement={marker} startElementProps={{ pointerEvents: "none" }} endElement={endElement}>
@@ -149,8 +149,12 @@ const LocationInput = ({ label, placeholder, value, onSelect, markerColor, marke
           aria-autocomplete="list"
           aria-activedescendant={showList && activeIndex >= 0 ? `${listId}-${activeIndex}` : undefined}
           bg="gray.50"
+          borderColor="gray.200"
+          rounded="xl"
           colorPalette="brand"
           fontSize="md"
+          fontWeight={500}
+          _focus={{ bg: "white" }}
         />
       </InputGroup>
 

@@ -27,3 +27,6 @@ export function formatDuration(seconds) {
     .filter(Boolean)
     .join(" ");
 }
+
+export const formatClockTime = (timestamp) =>
+  new Date(timestamp).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit" });
