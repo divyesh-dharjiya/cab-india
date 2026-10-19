@@ -1,20 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* h1 {
-  @apply text-2xl;
+html,
+body {
+  min-height: 100%;
 }
-h2 {
-  @apply text-xl;
-}
-h3 {
-  @apply text-lg;
-}
-a {
-   @apply text-blue-600 underline;
-} */
 
-@media (prefers-color-scheme: dark) {}
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-body {}
+.app-main {
+  flex: 1;
+}
+
+/* Leaflet markers rendered with L.divIcon */
+.cab-marker {
+  background: transparent;
+  border: none;
+}
+
+.cab-marker span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font: 700 13px/1 system-ui, sans-serif;
+}
+
+.cab-marker span b {
+  transform: rotate(45deg);
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
