@@ -1,33 +1,48 @@
-import { extendTheme } from "@chakra-ui/react";
+import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 
-const theme = extendTheme({
-  config: { initialColorMode: "light", useSystemColorMode: false },
-  fonts: {
-    heading: "var(--font-inter), system-ui, sans-serif",
-    body: "var(--font-inter), system-ui, sans-serif",
+const config = defineConfig({
+  globalCss: {
+    body: { bg: "gray.50", color: "gray.800" },
   },
-  colors: {
-    brand: {
-      50: "#FFFBEB",
-      100: "#FEF3C7",
-      200: "#FDE68A",
-      300: "#FCD34D",
-      400: "#FBBF24",
-      500: "#F59E0B",
-      600: "#D97706",
-      700: "#B45309",
-      800: "#92400E",
-      900: "#78350F",
+  theme: {
+    tokens: {
+      fonts: {
+        heading: { value: "var(--font-inter), system-ui, sans-serif" },
+        body: { value: "var(--font-inter), system-ui, sans-serif" },
+      },
+      colors: {
+        brand: {
+          50: { value: "#FFFBEB" },
+          100: { value: "#FEF3C7" },
+          200: { value: "#FDE68A" },
+          300: { value: "#FCD34D" },
+          400: { value: "#FBBF24" },
+          500: { value: "#F59E0B" },
+          600: { value: "#D97706" },
+          700: { value: "#B45309" },
+          800: { value: "#92400E" },
+          900: { value: "#78350F" },
+          950: { value: "#451A03" },
+        },
+      },
     },
-  },
-  styles: {
-    global: {
-      body: { bg: "gray.50", color: "gray.800" },
+    // Lets components use colorPalette="brand".
+    semanticTokens: {
+      colors: {
+        brand: {
+          solid: { value: "{colors.brand.500}" },
+          contrast: { value: "white" },
+          fg: { value: "{colors.brand.700}" },
+          muted: { value: "{colors.brand.200}" },
+          subtle: { value: "{colors.brand.100}" },
+          emphasized: { value: "{colors.brand.300}" },
+          focusRing: { value: "{colors.brand.400}" },
+        },
+      },
     },
-  },
-  components: {
-    Button: { defaultProps: { colorScheme: "brand" } },
   },
 });
 
-export default theme;
+const system = createSystem(defaultConfig, config);
+
+export default system;

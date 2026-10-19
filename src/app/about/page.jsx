@@ -11,25 +11,27 @@ const FEATURES = [
 
 const About = () => (
   <Box>
-    <Box bgGradient="linear(to-br, brand.400, brand.600)" color="gray.900">
+    <Box bgGradient="to-br" gradientFrom="brand.400" gradientTo="brand.600" color="gray.900">
       <Container maxW="5xl" py={{ base: 12, md: 20 }} textAlign="center">
-        <Heading size="2xl" mb={4}>Getting around India, made simple</Heading>
+        <Heading as="h1" size={{ base: "4xl", md: "5xl" }} mb={4}>
+          Getting around India, made simple
+        </Heading>
         <Text fontSize="lg" maxW="2xl" mx="auto">
           CAB India helps you plan a ride in seconds: pick where you are, where you&apos;re going,
           and compare fares across cab types on a live map.
         </Text>
-        <Button as={NextLink} href="/home" size="lg" mt={8} colorScheme="gray" bg="gray.900" color="white" _hover={{ bg: "gray.700" }}>
-          Book a ride
+        <Button asChild size="lg" mt={8} bg="gray.900" color="white" _hover={{ bg: "gray.700" }}>
+          <NextLink href="/home">Book a ride</NextLink>
         </Button>
       </Container>
     </Box>
 
     <Container maxW="5xl" py={{ base: 10, md: 16 }}>
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
         {FEATURES.map((feature) => (
-          <Stack key={feature.title} bg="white" p={6} rounded="2xl" border="1px solid" borderColor="gray.200" spacing={2}>
+          <Stack key={feature.title} bg="white" p={6} rounded="2xl" borderWidth="1px" borderColor="gray.200" gap={2}>
             <Text fontSize="3xl">{feature.icon}</Text>
-            <Heading size="md">{feature.title}</Heading>
+            <Heading size="lg">{feature.title}</Heading>
             <Text color="gray.600">{feature.text}</Text>
           </Stack>
         ))}
