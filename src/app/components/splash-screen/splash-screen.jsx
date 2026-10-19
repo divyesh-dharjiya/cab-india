@@ -1,27 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { Flex, Text } from "@chakra-ui/react";
 import Logo from "../../../../public/car.png";
 
 const STORAGE_KEY = "cab-india:splash-seen";
+const DURATION_MS = 1800;
+
+// Inlined in <head>: marks the document when the splash was already shown this session.
+export const SPLASH_SCRIPT = `try{var s=sessionStorage;if(s.getItem("${STORAGE_KEY}"))document.documentElement.setAttribute("data-splash-seen","");s.setItem("${STORAGE_KEY}","1")}catch(e){}`;
 
 // Shown once per browser session as an overlay, so the page underneath keeps loading.
 export default function SplashScreen() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    let seen = false;
-    try {
-      seen = sessionStorage.getItem(STORAGE_KEY) === "1";
-      sessionStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      // Storage can be unavailable (private mode); just show the splash.
-    }
-    if (seen) return;
-    setIsVisible(true);
-    const timeout = setTimeout(() => setIsVisible(false), 1800);
+    const seen = document.documentElement.hasAttribute("data-splash-seen");
+    const timeout = setTimeout(() => setIsVisible(false), seen ? 0 : DURATION_MS);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -30,6 +26,7 @@ export default function SplashScreen() {
       {isVisible && (
         <motion.div
           key="splash"
+          className="splash-screen"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
@@ -41,7 +38,7 @@ export default function SplashScreen() {
               animate={{ x: 0, opacity: 1 }}
               transition={{ type: "spring", stiffness: 120, damping: 14 }}
             >
-              <Image src={Logo} width={160} height={160} alt="" priority />
+              <Image src={Logo} width={160} height={160} alt="" preload />
             </motion.div>
             <motion.div
               initial={{ y: 12, opacity: 0 }}

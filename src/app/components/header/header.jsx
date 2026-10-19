@@ -1,21 +1,10 @@
 "use client";
+import { useState } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import {
-  Box,
-  Collapse,
-  Container,
-  Flex,
-  HStack,
-  IconButton,
-  Link,
-  Stack,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-import { useEffect } from "react";
+import { Box, Container, Flex, HStack, IconButton, Link, Stack, Text } from "@chakra-ui/react";
+import { Menu, X } from "lucide-react";
 import Logo from "../../../../public/car.png";
 
 const NAV_ITEMS = [
@@ -26,8 +15,7 @@ const NAV_ITEMS = [
 
 const NavLink = ({ href, label, isActive, ...props }) => (
   <Link
-    as={NextLink}
-    href={href}
+    asChild
     px={3}
     py={2}
     rounded="md"
@@ -35,21 +23,19 @@ const NavLink = ({ href, label, isActive, ...props }) => (
     color={isActive ? "brand.700" : "gray.600"}
     bg={isActive ? "brand.50" : "transparent"}
     _hover={{ textDecoration: "none", color: "gray.900", bg: "gray.100" }}
-    aria-current={isActive ? "page" : undefined}
     {...props}
   >
-    {label}
+    <NextLink href={href} aria-current={isActive ? "page" : undefined}>
+      {label}
+    </NextLink>
   </Link>
 );
 
 export default function Header() {
   const pathname = usePathname();
-  const { isOpen, onToggle, onClose } = useDisclosure();
-
-  // Close the mobile menu after navigating.
-  useEffect(() => {
-    onClose();
-  }, [pathname, onClose]);
+  // Remember which page the menu was opened on, so navigating closes it.
+  const [openOn, setOpenOn] = useState(null);
+  const isOpen = openOn === pathname;
 
   return (
     <Box
@@ -58,20 +44,22 @@ export default function Header() {
       top={0}
       zIndex={1100}
       bg="white"
-      borderBottom="1px solid"
+      borderBottomWidth="1px"
       borderColor="gray.200"
-      boxShadow="sm"
+      boxShadow="xs"
     >
       <Container maxW="7xl">
         <Flex h={16} align="center" justify="space-between">
-          <Link as={NextLink} href="/home" display="flex" alignItems="center" gap={2} _hover={{ textDecoration: "none" }}>
-            <Image src={Logo} width={40} height={40} alt="" priority />
-            <Text fontSize="xl" fontWeight={800} letterSpacing="tight">
-              CAB <Text as="span" color="brand.500">India</Text>
-            </Text>
+          <Link asChild display="flex" alignItems="center" gap={2} _hover={{ textDecoration: "none" }}>
+            <NextLink href="/home">
+              <Image src={Logo} width={40} height={40} alt="" preload />
+              <Text fontSize="xl" fontWeight={800} letterSpacing="tight" color="gray.900">
+                CAB <Text as="span" color="brand.500">India</Text>
+              </Text>
+            </NextLink>
           </Link>
 
-          <HStack as="nav" spacing={1} display={{ base: "none", md: "flex" }}>
+          <HStack as="nav" gap={1} display={{ base: "none", md: "flex" }}>
             {NAV_ITEMS.map((item) => (
               <NavLink key={item.href} {...item} isActive={pathname === item.href} />
             ))}
@@ -79,23 +67,23 @@ export default function Header() {
 
           <IconButton
             display={{ base: "flex", md: "none" }}
-            onClick={onToggle}
-            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+            onClick={() => setOpenOn(isOpen ? null : pathname)}
             variant="ghost"
-            colorScheme="gray"
             aria-label="Toggle navigation"
             aria-expanded={isOpen}
-          />
+          >
+            {isOpen ? <X /> : <Menu />}
+          </IconButton>
         </Flex>
       </Container>
 
-      <Collapse in={isOpen} animateOpacity>
-        <Stack as="nav" spacing={1} px={4} pb={4} display={{ md: "none" }}>
+      {isOpen && (
+        <Stack as="nav" gap={1} px={4} pb={4} display={{ md: "none" }}>
           {NAV_ITEMS.map((item) => (
             <NavLink key={item.href} {...item} isActive={pathname === item.href} />
           ))}
         </Stack>
-      </Collapse>
+      )}
     </Box>
   );
 }

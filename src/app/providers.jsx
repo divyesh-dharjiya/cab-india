@@ -1,12 +1,13 @@
 "use client";
-import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
-import theme from "./theme";
+import system from "./theme";
+import AppToaster from "./components/toaster/toaster";
 
 export default function Providers({ children }) {
   return (
-    <CacheProvider>
-      <ChakraProvider theme={theme}>{children}</ChakraProvider>
-    </CacheProvider>
+    <ChakraProvider value={system}>
+      {children}
+      <AppToaster />
+    </ChakraProvider>
   );
 }

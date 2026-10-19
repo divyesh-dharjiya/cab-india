@@ -1,19 +1,7 @@
 "use client";
 import { useState } from "react";
-import {
-  Button,
-  Container,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Grid,
-  Heading,
-  Input,
-  Stack,
-  Text,
-  Textarea,
-  useToast,
-} from "@chakra-ui/react";
+import { Button, Container, Field, Grid, Heading, Input, Stack, Text, Textarea } from "@chakra-ui/react";
+import { toaster } from "../components/toaster/toaster";
 
 const INITIAL_FORM = { name: "", email: "", message: "" };
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,8 +18,18 @@ const INFO = [
   { icon: "⚡", title: "Response time", text: "We usually reply within one business day" },
 ];
 
+const FormField = ({ label, error, children }) => (
+  <Field.Root invalid={!!error} required>
+    <Field.Label>
+      {label}
+      <Field.RequiredIndicator />
+    </Field.Label>
+    {children}
+    <Field.ErrorText>{error}</Field.ErrorText>
+  </Field.Root>
+);
+
 const Contact = () => {
-  const toast = useToast();
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -48,11 +46,11 @@ const Contact = () => {
     const nextErrors = validate(form);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
-    toast({
-      status: "success",
+    toaster.create({
+      type: "success",
       title: `Thanks, ${form.name.trim()}!`,
       description: "Your message has been noted. We'll get back to you soon.",
-      isClosable: true,
+      closable: true,
     });
     setForm(INITIAL_FORM);
     setIsSubmitted(false);
@@ -61,15 +59,15 @@ const Contact = () => {
   return (
     <Container maxW="6xl" py={{ base: 8, md: 14 }}>
       <Grid templateColumns={{ base: "1fr", md: "1fr 1.3fr" }} gap={{ base: 8, md: 12 }}>
-        <Stack spacing={6}>
-          <Stack spacing={2}>
-            <Heading size="xl">Get in touch</Heading>
+        <Stack gap={6}>
+          <Stack gap={2}>
+            <Heading as="h1" size="4xl">Get in touch</Heading>
             <Text color="gray.600">Questions about a ride, fares or partnerships? Send us a message.</Text>
           </Stack>
           {INFO.map((item) => (
-            <Stack key={item.title} direction="row" spacing={4} align="flex-start">
+            <Stack key={item.title} direction="row" gap={4} align="flex-start">
               <Text fontSize="2xl" lineHeight={1}>{item.icon}</Text>
-              <Stack spacing={0}>
+              <Stack gap={0}>
                 <Text fontWeight={700}>{item.title}</Text>
                 <Text color="gray.600">{item.text}</Text>
               </Stack>
@@ -77,23 +75,28 @@ const Contact = () => {
           ))}
         </Stack>
 
-        <Stack as="form" onSubmit={handleSubmit} noValidate spacing={4} bg="white" p={{ base: 5, md: 8 }} rounded="2xl" border="1px solid" borderColor="gray.200" boxShadow="sm">
-          <FormControl isInvalid={!!errors.name} isRequired>
-            <FormLabel>Name</FormLabel>
-            <Input value={form.name} onChange={update("name")} autoComplete="name" focusBorderColor="brand.400" />
-            <FormErrorMessage>{errors.name}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={!!errors.email} isRequired>
-            <FormLabel>Email</FormLabel>
-            <Input type="email" value={form.email} onChange={update("email")} autoComplete="email" focusBorderColor="brand.400" />
-            <FormErrorMessage>{errors.email}</FormErrorMessage>
-          </FormControl>
-          <FormControl isInvalid={!!errors.message} isRequired>
-            <FormLabel>Message</FormLabel>
-            <Textarea rows={5} value={form.message} onChange={update("message")} focusBorderColor="brand.400" />
-            <FormErrorMessage>{errors.message}</FormErrorMessage>
-          </FormControl>
-          <Button type="submit" size="lg">Send message</Button>
+        <Stack
+          as="form"
+          onSubmit={handleSubmit}
+          noValidate
+          gap={4}
+          bg="white"
+          p={{ base: 5, md: 8 }}
+          rounded="2xl"
+          borderWidth="1px"
+          borderColor="gray.200"
+          boxShadow="xs"
+        >
+          <FormField label="Name" error={errors.name}>
+            <Input value={form.name} onChange={update("name")} autoComplete="name" colorPalette="brand" />
+          </FormField>
+          <FormField label="Email" error={errors.email}>
+            <Input type="email" value={form.email} onChange={update("email")} autoComplete="email" colorPalette="brand" />
+          </FormField>
+          <FormField label="Message" error={errors.message}>
+            <Textarea rows={5} value={form.message} onChange={update("message")} colorPalette="brand" />
+          </FormField>
+          <Button type="submit" size="lg" colorPalette="brand">Send message</Button>
         </Stack>
       </Grid>
     </Container>
