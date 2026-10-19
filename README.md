@@ -1,6 +1,6 @@
 # CAB India
 
-A cab booking demo for India built with Next.js 13 (App Router), Chakra UI and Leaflet.
+A cab booking demo for India built with Next.js 16 (App Router), React 19, Chakra UI 3 and Leaflet.
 
 - Search pickup and drop locations across India (OpenStreetMap Nominatim, India-only results)
 - Use your current location as pickup, swap or clear locations
@@ -10,12 +10,18 @@ A cab booking demo for India built with Next.js 13 (App Router), Chakra UI and L
 
 ## Getting started
 
+Requires Node.js 24 (see `.nvmrc`).
+
 ```bash
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). Run `npm run lint` to lint.
+
+## Deploying on Vercel
+
+`package.json` pins `"engines": { "node": "24.x" }`, which Vercel uses instead of the Node.js version in Project Settings.
 
 ## Project structure
 

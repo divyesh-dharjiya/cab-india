@@ -1,26 +1,29 @@
 {
   "name": "taxi-india",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/next-js": "^2.1.5",
-    "@chakra-ui/react": "^2.8.1",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "eslint": "8.49.0",
-    "eslint-config-next": "13.4.19",
-    "framer-motion": "^10.16.4",
+    "@chakra-ui/react": "^3.37.0",
+    "@emotion/react": "^11.14.0",
     "leaflet": "^1.9.4",
-    "next": "13.4.19",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.1"
+    "lucide-react": "^1.59.0",
+    "motion": "^14.4.0",
+    "next": "^16.4.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-leaflet": "^5.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.13.0",
+    "eslint-config-next": "^16.4.2"
   }
 }
