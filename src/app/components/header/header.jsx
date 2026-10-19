@@ -1,160 +1,101 @@
-'use client';
+"use client";
+import NextLink from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Box,
-  Flex,
-  Text,
-  IconButton,
-  Stack,
   Collapse,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useColorModeValue,
-  useBreakpointValue,
+  Container,
+  Flex,
+  HStack,
+  IconButton,
+  Link,
+  Stack,
+  Text,
   useDisclosure,
-} from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-import Image from 'next/image';
-
-export default function Header() {
-  const { isOpen, onToggle } = useDisclosure()
-
-  return (
-    <Box className='items-stretch sticky top-0 z-50 justify-between'>
-      <Flex
-        bg={useColorModeValue('white', 'gray.800')}
-        color={useColorModeValue('gray.600', 'white')}
-        minH={'60px'}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={'solid'}
-        borderColor={useColorModeValue('gray.200', 'gray.900')}
-        align={'center'}
-        className='justify-items-start'>
-        <Flex flex={{ base: 1 }} justify={{ md: 'start' }} href="/home" cursor={'pointer'}>
-          <Flex display={{ md: 'flex' }} ml={4}>
-            <Box className="hover:text-black">
-              <Popover trigger={'hover'} placement={'bottom-start'}>
-                <PopoverTrigger>
-                  <Box as="a"
-                    href={'/'}
-                    fontSize={'lg'}
-                    fontWeight={900} display={'flex'}
-                  >
-                    <Image src="https://cdn-icons-png.flaticon.com/512/753/753907.png" width={30} height={10} alt='logo' className="mr-2" />
-                    CAB India
-                  </Box>
-                </PopoverTrigger>
-              </Popover>
-
-            </Box>
-          </Flex>
-
-          <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav />
-          </Flex>
-        </Flex>
-        <Flex
-          className='float-right'
-          display={{ base: 'flex', md: 'none' }}>
-          <IconButton
-            onClick={onToggle}
-            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
-            variant={'ghost'}
-            aria-label={'Toggle Navigation'}
-          />
-        </Flex>
-      </Flex>
-
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav />
-      </Collapse>
-    </Box>
-  )
-}
-
-const DesktopNav = () => {
-  const linkColor = useColorModeValue('gray.600', 'gray.200')
-  const linkHoverColor = useColorModeValue('gray.900', 'white')
-  const popoverContentBgColor = useColorModeValue('white', 'gray.800')
-
-  return (
-    <Stack direction={'row'} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={'hover'} placement={'bottom-start'}>
-            <PopoverTrigger>
-              <Box
-                as="a"
-                px={2}
-                href={navItem.href ?? '#'}
-                fontSize={'lg'}
-                fontWeight={800}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}>
-                {navItem.label}
-              </Box>
-            </PopoverTrigger>
-
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={'xl'}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={'xl'}
-                minW={'sm'}>
-              </PopoverContent>
-            )}
-          </Popover>
-        </Box>
-      ))}
-    </Stack>
-  )
-}
-
-
-const MobileNav = () => {
-  return (
-    <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ md: 'none' }}>
-      {NAV_ITEMS.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
-      ))}
-    </Stack>
-  )
-}
-
-const MobileNavItem = ({ label, children, href }) => {
-  return (
-    <Stack spacing={4} onClick={children}>
-      <Box
-        py={2}
-        as="a"
-        href={href ?? '#'}
-        justifyContent="space-between"
-        alignItems="center"
-        _hover={{
-          textDecoration: 'none',
-        }}>
-        <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
-          {label}
-        </Text>
-      </Box>
-    </Stack>
-  )
-}
+} from "@chakra-ui/react";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { useEffect } from "react";
+import Logo from "../../../../public/car.png";
 
 const NAV_ITEMS = [
-  {
-    label: 'About',
-    href: '/about'
-  },
-  {
-    label: 'Contact',
-    href: '/contact'
-  }
-]
+  { label: "Book a Ride", href: "/home" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+];
+
+const NavLink = ({ href, label, isActive, ...props }) => (
+  <Link
+    as={NextLink}
+    href={href}
+    px={3}
+    py={2}
+    rounded="md"
+    fontWeight={600}
+    color={isActive ? "brand.700" : "gray.600"}
+    bg={isActive ? "brand.50" : "transparent"}
+    _hover={{ textDecoration: "none", color: "gray.900", bg: "gray.100" }}
+    aria-current={isActive ? "page" : undefined}
+    {...props}
+  >
+    {label}
+  </Link>
+);
+
+export default function Header() {
+  const pathname = usePathname();
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
+  // Close the mobile menu after navigating.
+  useEffect(() => {
+    onClose();
+  }, [pathname, onClose]);
+
+  return (
+    <Box
+      as="header"
+      position="sticky"
+      top={0}
+      zIndex={1100}
+      bg="white"
+      borderBottom="1px solid"
+      borderColor="gray.200"
+      boxShadow="sm"
+    >
+      <Container maxW="7xl">
+        <Flex h={16} align="center" justify="space-between">
+          <Link as={NextLink} href="/home" display="flex" alignItems="center" gap={2} _hover={{ textDecoration: "none" }}>
+            <Image src={Logo} width={40} height={40} alt="" priority />
+            <Text fontSize="xl" fontWeight={800} letterSpacing="tight">
+              CAB <Text as="span" color="brand.500">India</Text>
+            </Text>
+          </Link>
+
+          <HStack as="nav" spacing={1} display={{ base: "none", md: "flex" }}>
+            {NAV_ITEMS.map((item) => (
+              <NavLink key={item.href} {...item} isActive={pathname === item.href} />
+            ))}
+          </HStack>
+
+          <IconButton
+            display={{ base: "flex", md: "none" }}
+            onClick={onToggle}
+            icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+            variant="ghost"
+            colorScheme="gray"
+            aria-label="Toggle navigation"
+            aria-expanded={isOpen}
+          />
+        </Flex>
+      </Container>
+
+      <Collapse in={isOpen} animateOpacity>
+        <Stack as="nav" spacing={1} px={4} pb={4} display={{ md: "none" }}>
+          {NAV_ITEMS.map((item) => (
+            <NavLink key={item.href} {...item} isActive={pathname === item.href} />
+          ))}
+        </Stack>
+      </Collapse>
+    </Box>
+  );
+}

@@ -1,8 +1,5 @@
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <main className="">
-      <h1>Hello</h1>
-    </main>
-  )
+export default function Root() {
+  redirect("/home");
 }
